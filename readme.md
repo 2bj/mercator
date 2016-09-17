@@ -4,7 +4,7 @@ Mercator is a solution for creating bots for e-commerce (Bot Shop).
 
 ## Installation
 
-    git clone https://github.com/vladimir-yuldashev/merchant.git
+    git clone https://github.com/vladimir-yuldashev/mercator.git
     composer install
 
 ## Contributing
