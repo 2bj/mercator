@@ -1,6 +1,6 @@
-# Merchant Bot
+# Mercator
 
-Merchant Bot is a solution for creating bots for e-commerce (Bot Shop).
+Mercator is a solution for creating bots for e-commerce (Bot Shop).
 
 ## Installation
 
