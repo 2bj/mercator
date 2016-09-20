@@ -13,7 +13,17 @@ Feel free to contribute by creating pull requests.
 
 ## Roadmap (TODO)
 
-TBA
+* Finite State Machine (Dialogs).
+* View categories.
+* View products.
+* Make order.
+* Admin interface.
+  * Dashboard.
+  * Categories.
+  * Products.
+  * Orders.
+  * User Management.
+  * Statistics.
 
 ## License
 

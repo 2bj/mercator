@@ -1,6 +1,6 @@
 {
   "name": "vladimir-yuldashev/merchant",
-  "description": "The Laravel Framework.",
+  "description": "E-Commerce Bot solution",
   "license": "MIT",
   "type": "project",
   "require": {
