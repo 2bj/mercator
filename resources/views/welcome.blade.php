@@ -8,7 +8,7 @@
     <title>{{ config('app.name', 'Mercator') }}</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <style>
@@ -47,6 +47,14 @@
 
         .title {
             font-size: 84px;
+            color: #62929E;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            text-align: right;
+            letter-spacing: 1px;
+            color: #62929E;
         }
 
         .links > a {
@@ -74,8 +82,12 @@
     @endif
 
     <div class="content">
-        <div class="title m-b-md">
+        <div class="title">
             Mercator
+        </div>
+
+        <div class="subtitle m-b-md">
+            E-Commerce Bot Solution
         </div>
 
         <div class="links">
