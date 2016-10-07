@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Log;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RavenHandler;
+use Raven_Client;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +29,12 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() == 'local') {
             $this->app->register('Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
         }
+
+        // Sentry logs
+        $client = new Raven_Client(config('sentry.dsn'));
+        $handler = new RavenHandler($client);
+        $handler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
+
+        Log::getMonolog()->pushHandler($handler);
     }
 }
