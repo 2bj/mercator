@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Webhooks;
 
+use App\Conversation\Conversation;
 use App\Http\Controllers\Controller;
 use App\Repositories\MessageRepository;
 use App\Repositories\UserRepository;
@@ -11,8 +12,11 @@ use Telegram;
 class TelegramController extends Controller
 {
 
-    public function process(UserRepository $users, MessageRepository $messages)
-    {
+    public function process(
+        UserRepository $users,
+        MessageRepository $messages,
+        Conversation $conversation
+    ) {
         $update = Telegram::bot()->getWebhookUpdate();
 
         Log::debug('Telegram.process', [
@@ -32,14 +36,9 @@ class TelegramController extends Controller
         );
 
         // сохраняем сообщение
-        $messages->store($user, $message->getMessageId(), $message->getText() ?? '');
+        $message = $messages->store($user, $message->getMessageId(), $message->getText() ?? '');
 
-        if (hash_equals($message->getText(), '/start')) {
-            Telegram::bot()->sendMessage([
-                'chat_id' => $user->chat_id,
-                'text' => 'Добро пожаловать в наш магазин.',
-            ]);
-        }
+        $conversation->start($user, $message);
     }
 
 }
