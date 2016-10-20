@@ -6,7 +6,6 @@ use App\Conversation\Conversation;
 use App\Http\Controllers\Controller;
 use App\Repositories\MessageRepository;
 use App\Repositories\UserRepository;
-use Log;
 use Telegram;
 
 class TelegramController extends Controller
@@ -19,7 +18,7 @@ class TelegramController extends Controller
     ) {
         $update = Telegram::bot()->getWebhookUpdate();
 
-        Log::debug('Telegram.process', [
+        $this->log('process', [
             'update' => $update,
         ]);
 

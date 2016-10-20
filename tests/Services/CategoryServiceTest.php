@@ -19,6 +19,9 @@ class CategoryServiceTest extends TestCase
 
     public function test_all()
     {
+        /**
+         * @var \Schema\Record[]
+         */
         $result = $this->service->all();
 
         $this->assertInstanceOf(Collection::class, $result);

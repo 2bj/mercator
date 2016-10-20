@@ -2,45 +2,47 @@
 
 namespace App\Conversation\Flows;
 
+use App\Conversation\Traits\HasOptions;
+use App\Conversation\Traits\HasStates;
+use App\Conversation\Traits\HasTriggers;
+use App\Conversation\Traits\SendsMessages;
 use App\Services\CategoryService;
-use Log;
 use Schema\Record;
-use Telegram\Bot\Keyboard\Keyboard;
 
 class CategoryFlow extends AbstractFlow
 {
 
-    protected $triggers = [];
-    protected $states = ['first', 'navigate'];
-    protected $options = [
-        'parent_id' => null,
-    ];
+    use HasTriggers, HasStates, HasOptions, SendsMessages;
 
-    protected function first()
+    public function __construct()
     {
-        $parentId = $this->options['parent_id'];
-        Log::debug('CategoryFlow.first', ['parent_id' => $parentId]);
+        // States
+        $this
+            ->addState('showParent')
+            ->addState('showChildren');
+
+        // Options
+        $this->addOption('parent_id');
+    }
+
+    protected function showParent()
+    {
+        $parentId = $this->getOption('parent_id');
+        $this->log('showParent', ['parent_id' => $parentId]);
 
         $buttons = [];
         foreach ($this->categories() as $category) {
             if ($category->offsetGet('parent_id') == $parentId) {
-                $buttons[] = [$category->offsetGet('name')];
+                $buttons[] = $category->offsetGet('name');
             }
         }
 
-        $this->telegram()->sendMessage([
-            'chat_id' => $this->user->chat_id,
-            'text' => 'Список категорий',
-            'reply_markup' => Keyboard::make([
-                'keyboard' => $buttons,
-                'resize_keyboard' => true,
-                'one_time_keyboard' => true
-            ]),
-        ]);
+        $this->reply('Список категорий', $buttons);
     }
 
-    protected function navigate()
+    protected function showChildren()
     {
+        $this->log('showChildren');
         /**
          * @var Record $record
          */
@@ -52,8 +54,10 @@ class CategoryFlow extends AbstractFlow
             return;
         }
 
-        $this->options = ['parent_id' => $category->offsetGet('id')];
-        $this->first();
+        $this->log('showChildren.parent_id', ['id' => $category->offsetGet('id')]);
+
+        $this->remember('parent_id', $category->offsetGet('id'));
+        $this->runState('showParent');
     }
 
     /**
